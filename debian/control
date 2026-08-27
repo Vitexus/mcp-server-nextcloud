@@ -7,7 +7,7 @@
 #   pymupdf4llm, pypdfium2, qdrant-client
 # The package builds cleanly but is not yet fully apt-installable as a
 # complete runtime until those land in follow-up packaging sessions.
-Source: nextcloud-mcp-server
+Source: mcp-server-nextcloud
 Section: python
 Priority: optional
 Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
@@ -19,9 +19,11 @@ Build-Depends:
  python3-hatchling,
 Standards-Version: 4.7.0
 Homepage: https://github.com/cbcoutinho/nextcloud-mcp-server
+Vcs-Git: https://github.com/Vitexus/mcp-server-nextcloud.git
+Vcs-Browser: https://github.com/Vitexus/mcp-server-nextcloud
 Rules-Requires-Root: no
 
-Package: nextcloud-mcp-server
+Package: mcp-server-nextcloud
 Architecture: all
 Multi-Arch: foreign
 Depends:
@@ -57,6 +59,9 @@ Depends:
  python3-dynaconf,
  python3-mistralai,
  python3-sqlalchemy,
+Provides: nextcloud-mcp-server
+Replaces: nextcloud-mcp-server (<< 0.129.9~)
+Breaks: nextcloud-mcp-server (<< 0.129.9~)
 Description: Model Context Protocol server for Nextcloud integration
  Nextcloud MCP Server implements the Model Context Protocol (MCP) so that
  AI assistants and LLM-based agents can interact with a Nextcloud instance:
@@ -71,3 +76,15 @@ Description: Model Context Protocol server for Nextcloud integration
  repo yet (fastembed, anthropic, langchain-text-splitters, pymupdf4llm,
  pypdfium2, qdrant-client).
  See /usr/share/doc/nextcloud-mcp-server/README.Debian for details.
+
+Package: mcprack-mcp-server-nextcloud
+Architecture: all
+Depends:
+ ${misc:Depends},
+ mcprack (>= 1.5.1),
+ mcp-server-nextcloud (= ${binary:Version}),
+Description: Registers Nextcloud MCP server into mcprack catalog
+ Companion package for mcp-server-nextcloud. Installing it registers
+ the nextcloud-mcp-server binary (stdio mode, single-user BasicAuth
+ only, no OAuth) as an available MCP server in the local mcprack
+ instance; removing it unregisters it again.

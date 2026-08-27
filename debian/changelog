@@ -1,3 +1,14 @@
+mcp-server-nextcloud (0.129.9-1) UNRELEASED; urgency=low
+
+  * Rename source/binary package from nextcloud-mcp-server to
+    mcp-server-nextcloud, matching the mcp-server-<name> convention,
+    with a new mcprack-mcp-server-nextcloud companion package that
+    registers it (stdio mode: `nextcloud-mcp-server run --transport
+    stdio`, single-user BasicAuth only, no OAuth) into the local
+    mcprack catalog. Old package name kept as Provides/Replaces/Breaks.
+
+ -- vitex <info@vitexsoftware.cz>  Thu, 27 Aug 2026 16:00:00 +0200
+
 nextcloud-mcp-server (0.129.8-1) UNRELEASED; urgency=low
 
   * Initial Debian packaging.

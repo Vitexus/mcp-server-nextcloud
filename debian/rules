@@ -3,6 +3,9 @@
 %:
 	dh $@ --with python3 --buildsystem=pybuild
 
+override_dh_auto_install:
+	dh_auto_install --destdir=debian/mcp-server-nextcloud
+
 override_dh_auto_configure:
 	# Upstream declares build-backend = "uv_build" (pyproject.toml
 	# [build-system]), which is not packaged in Debian (no
