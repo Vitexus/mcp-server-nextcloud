@@ -43,6 +43,11 @@ _DEFAULTS: dict[str, Any] = {
     "nextcloud_username": None,
     "nextcloud_password": None,
     "nextcloud_verify_ssl": True,
+    # Fail-closed write guard (nextcloud_mcp_server.readonly), read via
+    # cfg_bool("NEXTCLOUD_READONLY", True) since it's not a Settings field.
+    # Must be declared here (lowercase) so dynaconf reads the env var at all;
+    # with ignore_unknown_envvars=True an undeclared key is silently dropped.
+    "nextcloud_readonly": True,
     "nextcloud_ca_bundle": None,
     "nextcloud_http_keepalive": True,
     "nextcloud_mcp_server_url": None,

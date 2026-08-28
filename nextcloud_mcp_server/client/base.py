@@ -24,6 +24,7 @@ from nextcloud_mcp_server.observability.metrics import (
     record_nextcloud_api_retry,
 )
 from nextcloud_mcp_server.observability.tracing import trace_nextcloud_api_call
+from nextcloud_mcp_server.readonly import require_writable
 
 #: Marks a request whose body the caller intends to consume incrementally.
 #:
@@ -290,6 +291,7 @@ class BaseNextcloudClient(ABC):
         Returns:
             Response object
         """
+        require_writable(method)
         url = self._resolve_url(url)
         logger.debug("Making %s request to %s", method, url)
 

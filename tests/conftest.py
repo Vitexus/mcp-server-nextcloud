@@ -27,6 +27,15 @@ from nextcloud_mcp_server.client import NextcloudClient
 
 logger = logging.getLogger(__name__)
 
+# NEXTCLOUD_READONLY now defaults to true (fail-closed) in the app itself
+# (nextcloud_mcp_server.readonly); most of this test suite exercises
+# mutating-client behavior against mocked/real transports and was written
+# against the old writable-by-default behavior. Set the test-suite baseline
+# here (before any test imports nextcloud_mcp_server.config, so dynaconf
+# picks it up on first load) so those tests keep exercising real behavior;
+# a dedicated readonly-guard test suite explicitly overrides this per-test.
+os.environ.setdefault("NEXTCLOUD_READONLY", "false")
+
 # Default scopes for OAuth testing - all app-specific read/write scopes.
 #
 # The OAuth token is the ceiling for every tool call, not just for tool

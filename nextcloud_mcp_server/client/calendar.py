@@ -21,6 +21,7 @@ from icalendar import Todo as ICalTodo
 from lxml import etree  # type: ignore[import-untyped]  # ty: ignore[unresolved-import]
 
 from ..config import get_nextcloud_ssl_verify
+from ..readonly import require_writable
 from .dav_errors import dav_error_from_response
 
 logger = logging.getLogger(__name__)
@@ -622,6 +623,7 @@ class CalendarClient:
         color: str = "#1976D2",
     ) -> dict[str, Any]:
         """Create a new calendar with retry on 429 errors."""
+        require_writable("MKCALENDAR")
         await self._ensure_calendar_home()
         # Use custom MKCALENDAR XML instead of caldav library's make_calendar() due to:
         # 1. Missing CalendarServer namespace (cs:) in caldav's nsmap
@@ -667,6 +669,7 @@ class CalendarClient:
 
     async def delete_calendar(self, calendar_name: str) -> dict[str, Any]:
         """Delete a calendar."""
+        require_writable("DELETE")
         await self._ensure_calendar_home()
         # Use absolute URL for deletion
         calendar_url = self._get_calendar_url(calendar_name)
@@ -864,6 +867,7 @@ class CalendarClient:
         self, calendar_name: str, event_data: dict[str, Any]
     ) -> dict[str, Any]:
         """Create a new calendar event."""
+        require_writable("PUT")
         await self._ensure_calendar_home()
         calendar = self._get_calendar(calendar_name)
 
@@ -900,6 +904,7 @@ class CalendarClient:
         Raises:
             DavPreconditionFailed: If the event changed since ``etag`` was read.
         """
+        require_writable("PUT")
         await self._ensure_calendar_home()
         calendar = self._get_calendar(calendar_name)
 
@@ -1062,6 +1067,7 @@ class CalendarClient:
         into a per-object "the server refused this event" message. Catching the
         ``DAVError`` base would have masked exactly those.
         """
+        require_writable("DELETE")
         await self._ensure_calendar_home()
         calendar = self._get_calendar(calendar_name)
 
@@ -1229,6 +1235,7 @@ class CalendarClient:
         self, calendar_name: str, todo_data: dict[str, Any]
     ) -> dict[str, Any]:
         """Create a new todo/task."""
+        require_writable("PUT")
         await self._ensure_calendar_home()
         calendar = self._get_calendar(calendar_name)
 
@@ -1264,6 +1271,7 @@ class CalendarClient:
         Raises:
             DavPreconditionFailed: If the todo changed since ``etag`` was read.
         """
+        require_writable("PUT")
         await self._ensure_calendar_home()
         calendar = self._get_calendar(calendar_name)
 
@@ -2741,6 +2749,7 @@ class CalendarClient:
         self, filter_criteria: dict[str, Any], update_data: dict[str, Any]
     ) -> dict[str, Any]:
         """Bulk update events matching filter criteria."""
+        require_writable("PUT")
         await self._ensure_calendar_home()
         try:
             start_datetime = None
