@@ -17,6 +17,7 @@ String[] distributions = [
 			// 'ubuntu:jammy',
 			// 'ubuntu:noble',
 			// 'ubuntu:resolute',
+			'debian:forky',
 ]
 
 String vendor = 'vitexsoftware'
